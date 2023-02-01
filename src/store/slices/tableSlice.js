@@ -1,5 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
-import { reset, resetStats } from "./formSlice";
+import { resetStats } from "./formSlice";
 
 const buyInUI =
   localStorage.getItem("buyInUI") !== null
@@ -28,10 +28,6 @@ const tableSlice = createSlice({
   },
   extraReducers(builder) {
     builder.addCase(resetStats, (state) => {
-      state.buyInUI = {};
-      state.totalUI = {};
-    });
-    builder.addCase(reset, (state) => {
       state.buyInUI = {};
       state.totalUI = {};
     });

@@ -5,6 +5,17 @@ import { useDispatch } from "react-redux";
 import { reset, resetStats } from "./store";
 
 function App() {
+  const localKey = [
+    "numOfPlayers",
+    "player",
+    "buyInUI",
+    "totalUI",
+    "amountOfRate",
+    "isOpen",
+  ];
+  const removeLocalKey = (key) => {
+    localStorage.removeItem(key);
+  };
   const dispatch = useDispatch();
   const defaultState =
     localStorage.getItem("isOpen") !== null
@@ -18,21 +29,15 @@ function App() {
   const handleResetAll = () => {
     dispatch(reset());
     setIsOpen(true);
-    localStorage.setItem("isOpen", JSON.stringify(true));
-    localStorage.removeItem("numOfPlayers");
-    localStorage.removeItem("player");
-    localStorage.removeItem("buyInUI");
-    localStorage.removeItem("totalUI");
-    localStorage.removeItem("amountOfRate");
-    localStorage.removeItem("isOpen");
+    localKey.forEach((key) => removeLocalKey(key));
     Object.keys(localStorage)
       .filter((x) => x.startsWith("Name"))
-      .forEach((x) => localStorage.removeItem(x));
+      .forEach((x) => removeLocalKey(x));
   };
   const handleResetStats = () => {
     dispatch(resetStats());
-    localStorage.removeItem("buyInUI");
-    localStorage.removeItem("totalUI");
+    removeLocalKey("buyInUI");
+    removeLocalKey("totalUI");
   };
   return (
     <div className="min-h-screen">
