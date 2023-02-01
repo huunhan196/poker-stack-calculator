@@ -149,7 +149,7 @@ function TablePage() {
             onChange={(e) => {
               dispatch(addTotalUI({ [player.id]: Number(e.target.value) }));
             }}
-            value={totalUI[player.id]}
+            value={totalUI[player.id] >= 0 ? totalUI[player.id] : ""}
           ></input>
           <button type="submit">
             <BiCheckCircle className="text-2xl" />
