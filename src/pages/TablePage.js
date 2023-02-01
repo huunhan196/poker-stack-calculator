@@ -129,7 +129,7 @@ function TablePage() {
       label: "Total Buy-in (Chips)",
       render: (player) => (
         <div className="tm-2 flex flex-row justify-center items-center text-gray-300">
-          {player.buyin}
+          {player.buyin || ""}
         </div>
       ),
     },
