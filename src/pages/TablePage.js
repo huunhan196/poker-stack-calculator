@@ -1,12 +1,19 @@
 import Table from "../components/Table";
 import { useSelector, useDispatch } from "react-redux";
 import { BiPlusCircle, BiTrash, BiCheckCircle } from "react-icons/bi";
-import { addBuyin, addTotal, removeRow, addPlayer } from "../store";
-import { useState, useEffect } from "react";
+import {
+  addBuyin,
+  addTotal,
+  removeRow,
+  addPlayer,
+  addBuyInUI,
+  addTotalUI,
+} from "../store";
+import { useEffect } from "react";
 
 function TablePage() {
-  const [buyin, setBuyin] = useState({});
-  const [total, setTotal] = useState({});
+  // const [buyin, setBuyin] = useState({});
+  // const [total, setTotal] = useState({});
   const dispatch = useDispatch();
   const { arr, amountOfRate, numOfInputs } = useSelector((state) => {
     return {
@@ -14,6 +21,9 @@ function TablePage() {
       amountOfRate: state.form.amountOfRate,
       numOfInputs: state.form.numOfInputs,
     };
+  });
+  const { buyInUI, totalUI } = useSelector((state) => {
+    return { buyInUI: state.table.buyInUI, totalUI: state.table.totalUI };
   });
   useEffect(() => {
     numOfInputs.forEach((_, i) =>
@@ -25,23 +35,22 @@ function TablePage() {
     );
   }, [dispatch, numOfInputs]);
   const handleBuyinSubmit = (player) => {
-    if (buyin[player.id] >= 0) {
+    if (buyInUI[player.id]) {
       dispatch(
         addBuyin({
-          amount: buyin[player.id],
+          amount: buyInUI[player.id],
           id: player.id,
         })
       );
     }
-    console.log(typeof buyin[player.id]);
     // setBuyin({ ...buyin, [player.id]: 0 });
   };
 
   const handleTotalSubmit = (player) => {
-    if (total[player.id] >= 0) {
+    if (totalUI[player.id] >= 0) {
       dispatch(
         addTotal({
-          amount: total[player.id],
+          amount: totalUI[player.id],
           id: player.id,
         })
       );
@@ -75,8 +84,9 @@ function TablePage() {
             type="text"
             className="w-10 sm:w-1/4 mr-2 p-2 bg-slate-700 text-white rounded-lg focus:outline-none focus:scale-110"
             onChange={(e) => {
-              setBuyin({ ...buyin, [player.id]: Number(e.target.value) });
+              dispatch(addBuyInUI({ [player.id]: Number(e.target.value) }));
             }}
+            value={buyInUI[player.id] || ""}
           ></input>
           <button type="submit">
             <BiPlusCircle className="text-xl" />
@@ -103,8 +113,9 @@ function TablePage() {
               type="text"
               className="w-12 sm:w-full mr-2 p-2 bg-slate-700 text-white rounded-lg focus:outline-none focus:scale-110"
               onChange={(e) => {
-                setTotal({ ...total, [player.id]: Number(e.target.value) });
+                dispatch(addTotalUI({ [player.id]: Number(e.target.value) }));
               }}
+              value={totalUI[player.id] || ""}
             ></input>
             <button type="submit">
               <BiCheckCircle className="text-xl" />

@@ -27,16 +27,6 @@ function InputForm({ onClose }) {
   const handleSubmit = (e) => {
     e.preventDefault();
     onClose();
-    console.log(
-      "Players",
-      numOfPlayers,
-      "Amount",
-      amountOfRate,
-      "Inputs",
-      numOfInputs,
-      "Array",
-      arr
-    );
   };
 
   return (
@@ -82,7 +72,7 @@ function InputForm({ onClose }) {
           </div>
         </div>
       </div>
-      <button class="w-60 mt-6 py-2 text-gray-100 bg-gradient-to-r from-gray-900 to-gray-600 hover:bg-gradient-to-br focus:outline-none rounded text-md text-center">
+      <button className="w-60 mt-6 py-2 text-gray-100 bg-gradient-to-r from-gray-900 to-gray-600 hover:bg-gradient-to-br focus:outline-none rounded text-md text-center">
         Start Game!
       </button>
     </form>

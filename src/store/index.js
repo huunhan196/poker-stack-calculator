@@ -9,11 +9,14 @@ import {
   removeRow,
   addTotal,
   reset,
+  resetStats,
 } from "./slices/formSlice";
+import { addBuyInUI, addTotalUI, tableReducer } from "./slices/tableSlice";
 
 const store = configureStore({
   reducer: {
     form: formReducer,
+    table: tableReducer,
   },
 });
 
@@ -27,4 +30,7 @@ export {
   removeRow,
   addTotal,
   reset,
+  resetStats,
+  addBuyInUI,
+  addTotalUI,
 };

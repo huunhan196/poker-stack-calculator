@@ -15,6 +15,13 @@ const formSlice = createSlice({
       state.amountOfRate = 0;
       state.arr = [];
     },
+    resetStats(state) {
+      const updatedStats = state.arr.map((player) => {
+        return { ...player, buyin: 0, total: undefined };
+      });
+
+      state.arr = updatedStats;
+    },
     changeNumPlayer(state, action) {
       state.numOfPlayers = action.payload;
     },
@@ -72,5 +79,6 @@ export const {
   removeRow,
   addTotal,
   reset,
+  resetStats,
 } = formSlice.actions;
 export const formReducer = formSlice.reducer;
