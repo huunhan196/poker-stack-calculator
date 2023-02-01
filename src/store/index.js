@@ -10,6 +10,7 @@ import {
   addTotal,
   reset,
   resetStats,
+  adjustName,
 } from "./slices/formSlice";
 import { addBuyInUI, addTotalUI, tableReducer } from "./slices/tableSlice";
 
@@ -33,4 +34,5 @@ export {
   resetStats,
   addBuyInUI,
   addTotalUI,
+  adjustName,
 };

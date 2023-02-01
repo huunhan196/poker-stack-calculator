@@ -2,18 +2,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { changeNumPlayer, changeInput, changeRate } from "../store";
 import { BsFillPersonFill } from "react-icons/bs";
 
-function InputForm({ onClose }) {
+function InputForm({ isOpen, onClose }) {
   const dispatch = useDispatch();
-  const { numOfPlayers, amountOfRate, numOfInputs, arr } = useSelector(
-    (state) => {
-      return {
-        numOfPlayers: state.form.numOfPlayers,
-        numOfInputs: state.form.numOfInputs,
-        amountOfRate: state.form.amountOfRate,
-        arr: state.form.arr,
-      };
-    }
-  );
+  const { numOfPlayers, amountOfRate } = useSelector((state) => {
+    return {
+      numOfPlayers: state.form.numOfPlayers,
+      amountOfRate: state.form.amountOfRate,
+    };
+  });
 
   const handlePlayerChange = (e) => {
     dispatch(changeNumPlayer(e.target.value));

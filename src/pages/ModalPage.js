@@ -6,7 +6,7 @@ function ModalPage({ isOpen, onClose }) {
     <>
       {isOpen && (
         <Modal>
-          <InputForm onClose={onClose} />
+          <InputForm isOpen={isOpen} onClose={onClose} />
         </Modal>
       )}
     </>

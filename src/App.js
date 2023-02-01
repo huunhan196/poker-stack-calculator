@@ -6,14 +6,33 @@ import { reset, resetStats } from "./store";
 
 function App() {
   const dispatch = useDispatch();
-  const [isOpen, setIsOpen] = useState(true);
-  const handleClose = () => setIsOpen(false);
+  const defaultState =
+    localStorage.getItem("isOpen") !== null
+      ? JSON.parse(localStorage.getItem("isOpen"))
+      : true;
+  const [isOpen, setIsOpen] = useState(defaultState);
+  const handleClose = () => {
+    setIsOpen(false);
+    localStorage.setItem("isOpen", JSON.stringify(false));
+  };
   const handleResetAll = () => {
     dispatch(reset());
     setIsOpen(true);
+    localStorage.setItem("isOpen", JSON.stringify(true));
+    localStorage.removeItem("numOfPlayers");
+    localStorage.removeItem("player");
+    localStorage.removeItem("buyInUI");
+    localStorage.removeItem("totalUI");
+    localStorage.removeItem("amountOfRate");
+    localStorage.removeItem("isOpen");
+    Object.keys(localStorage)
+      .filter((x) => x.startsWith("Name"))
+      .forEach((x) => localStorage.removeItem(x));
   };
   const handleResetStats = () => {
     dispatch(resetStats());
+    localStorage.removeItem("buyInUI");
+    localStorage.removeItem("totalUI");
   };
   return (
     <div className="min-h-screen">
@@ -28,7 +47,7 @@ function App() {
               className="relative inline-flex items-center justify-center p-0.5 mr-2 overflow-hidden text-sm font-medium rounded-lg group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white dark:text-white focus:outline-none"
             >
               <span className="text-gray-300 relative px-5 py-2.5 transition-all ease-in duration-75 dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
-                Reset All
+                Start Over
               </span>
             </button>
           )}
@@ -37,7 +56,7 @@ function App() {
             className="relative inline-flex items-center justify-center p-0.5 mr-2 overflow-hidden text-sm font-medium rounded-lg group bg-gradient-to-br from-purple-600 to-blue-500 group-hover:from-purple-600 group-hover:to-blue-500 hover:text-white dark:text-white focus:outline-none "
           >
             <span className="text-gray-300 relative px-5 py-2.5 transition-all ease-in duration-75 dark:bg-gray-900 rounded-md group-hover:bg-opacity-0">
-              Reset Stats
+              Reset Game
             </span>
           </button>
         </div>

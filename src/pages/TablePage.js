@@ -8,12 +8,11 @@ import {
   addPlayer,
   addBuyInUI,
   addTotalUI,
+  adjustName,
 } from "../store";
 import { useEffect } from "react";
 
 function TablePage() {
-  // const [buyin, setBuyin] = useState({});
-  // const [total, setTotal] = useState({});
   const dispatch = useDispatch();
   const { arr, amountOfRate, numOfInputs } = useSelector((state) => {
     return {
@@ -61,11 +60,23 @@ function TablePage() {
     {
       label: "Name",
       render: (player) => (
-        <form onSubmit={(e) => e.preventDefault()}>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+          }}
+        >
           <input
             className="w-20 p-2 bg-slate-700 text-white rounded-lg focus:outline-none focus:scale-110"
             type="text"
             placeholder={player.name}
+            onChange={(e) => {
+              dispatch(adjustName({ name: e.target.value, id: player.id }));
+              localStorage.setItem(
+                `Name ${player.id}`,
+                JSON.stringify(e.target.value)
+              );
+            }}
+            value={player.name}
           />
         </form>
       ),
