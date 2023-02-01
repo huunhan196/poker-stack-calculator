@@ -89,6 +89,21 @@ const formSlice = createSlice({
         JSON.stringify(state.arr.map((player) => player))
       );
     },
+    reduceBuyin(state, action) {
+      const updatedBuyin = state.arr.map((player) => {
+        if (player.id === action.payload.id) {
+          return { ...player, buyin: player.buyin - action.payload.amount };
+        }
+
+        return player;
+      });
+
+      state.arr = updatedBuyin;
+      localStorage.setItem(
+        "player",
+        JSON.stringify(state.arr.map((player) => player))
+      );
+    },
     addTotal(state, action) {
       const updatedTotal = state.arr.map((player) => {
         if (player.id === action.payload.id) {
@@ -128,5 +143,6 @@ export const {
   reset,
   resetStats,
   adjustName,
+  reduceBuyin,
 } = formSlice.actions;
 export const formReducer = formSlice.reducer;

@@ -1,6 +1,11 @@
 import Table from "../components/Table";
 import { useSelector, useDispatch } from "react-redux";
-import { BiPlusCircle, BiTrash, BiCheckCircle } from "react-icons/bi";
+import {
+  BiPlusCircle,
+  BiMinusCircle,
+  BiTrash,
+  BiCheckCircle,
+} from "react-icons/bi";
 import {
   addBuyin,
   addTotal,
@@ -9,6 +14,7 @@ import {
   addBuyInUI,
   addTotalUI,
   adjustName,
+  reduceBuyin,
 } from "../store";
 import { useEffect } from "react";
 
@@ -34,7 +40,7 @@ function TablePage() {
     );
   }, [dispatch, numOfInputs]);
   const handleBuyinSubmit = (player) => {
-    if (buyInUI[player.id]) {
+    if (buyInUI[player.id] >= 0) {
       dispatch(
         addBuyin({
           amount: buyInUI[player.id],
@@ -42,7 +48,6 @@ function TablePage() {
         })
       );
     }
-    // setBuyin({ ...buyin, [player.id]: 0 });
   };
 
   const handleTotalSubmit = (player) => {
@@ -66,7 +71,7 @@ function TablePage() {
           }}
         >
           <input
-            className="w-20 p-2 bg-slate-700 text-white rounded-lg focus:outline-none focus:scale-110"
+            className="text-center w-20 p-2 bg-slate-700 text-white rounded-lg focus:outline-none focus:scale-110"
             type="text"
             placeholder={player.name}
             onChange={(e) => {
@@ -89,57 +94,95 @@ function TablePage() {
             e.preventDefault();
             handleBuyinSubmit(player);
           }}
-          className="m-2 flex flex-row items-center"
+          className="flex flex-row justify-between items-center"
         >
+          <button
+            onClick={(e) => {
+              e.preventDefault();
+              if (player.buyin > 0) {
+                dispatch(
+                  reduceBuyin({
+                    amount: buyInUI[player.id],
+                    id: player.id,
+                  })
+                );
+              }
+            }}
+          >
+            <BiMinusCircle className="text-2xl mr-2 md:mr-0" />
+          </button>
           <input
             type="text"
-            className="w-10 sm:w-1/4 mr-2 p-2 bg-slate-700 text-white rounded-lg focus:outline-none focus:scale-110"
+            className="text-center w-10 md:w-12 mr-2 md:mr-0 p-2 bg-slate-700 text-white rounded-lg focus:outline-none focus:scale-110"
             onChange={(e) => {
               dispatch(addBuyInUI({ [player.id]: Number(e.target.value) }));
             }}
             value={buyInUI[player.id] || ""}
           ></input>
           <button type="submit">
-            <BiPlusCircle className="text-xl" />
+            <BiPlusCircle className="text-2xl" />
           </button>
         </form>
       ),
     },
     {
       label: "Total Buy-in (Chips)",
-      render: (player) => player.buyin,
-    },
-    {
-      label: "Total End (Chips)",
       render: (player) => (
-        <div className="w-1/2 flex flex-row justify-start items-center">
-          <form
-            onSubmit={(e) => {
-              e.preventDefault();
-              handleTotalSubmit(player);
-            }}
-            className="m-2 flex flex-row items-center"
-          >
-            <input
-              type="text"
-              className="w-12 sm:w-full mr-2 p-2 bg-slate-700 text-white rounded-lg focus:outline-none focus:scale-110"
-              onChange={(e) => {
-                dispatch(addTotalUI({ [player.id]: Number(e.target.value) }));
-              }}
-              value={totalUI[player.id] || ""}
-            ></input>
-            <button type="submit">
-              <BiCheckCircle className="text-xl" />
-            </button>
-          </form>
+        <div className="tm-2 flex flex-row justify-center items-center text-gray-300">
+          {player.buyin}
         </div>
       ),
     },
     {
-      label: "Remaining (Chips)",
+      label: "Total End (Chips)",
       render: (player) => (
-        <div>{player.total >= 0 ? player.total - player.buyin : ""}</div>
+        <form
+          onSubmit={(e) => {
+            e.preventDefault();
+            handleTotalSubmit(player);
+          }}
+          className="m-2 flex flex-row justify-center items-center"
+        >
+          <input
+            type="text"
+            className="text-center w-12 md:w-16 mr-4 p-2 bg-slate-700 text-white rounded-lg focus:outline-none focus:scale-110"
+            onChange={(e) => {
+              dispatch(addTotalUI({ [player.id]: Number(e.target.value) }));
+            }}
+            value={totalUI[player.id]}
+          ></input>
+          <button type="submit">
+            <BiCheckCircle className="text-2xl" />
+          </button>
+        </form>
       ),
+    },
+    {
+      label: "Remaining (Chips)",
+      render: (player) => {
+        const remaining = player.total - player.buyin;
+        let color;
+        switch (true) {
+          case remaining > 0:
+            color = "text-green-400";
+            break;
+          case remaining < 0:
+            color = "text-red-400";
+            break;
+          case remaining === 0:
+            color = "text-yellow-400";
+            break;
+          default:
+            color = "";
+        }
+        return (
+          <div
+            className={`flex flex-row justify-center items-center font-bold text-md text-gray-300 ${color}`}
+          >
+            {player.total >= 0 ? player.total - player.buyin : ""}
+          </div>
+        );
+      },
     },
     {
       label: "Balance (VND)",
@@ -162,7 +205,9 @@ function TablePage() {
             color = "";
         }
         return (
-          <div className={`font-bold text-md ${color}`}>
+          <div
+            className={`flex flex-row justify-center items-center font-bold text-md ${color}`}
+          >
             {player.total >= 0
               ? `${Math.round(
                   ((player.total - player.buyin) * amountOfRate) / 1000

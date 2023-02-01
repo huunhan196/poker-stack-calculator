@@ -11,6 +11,7 @@ import {
   reset,
   resetStats,
   adjustName,
+  reduceBuyin,
 } from "./slices/formSlice";
 import { addBuyInUI, addTotalUI, tableReducer } from "./slices/tableSlice";
 
@@ -35,4 +36,5 @@ export {
   addBuyInUI,
   addTotalUI,
   adjustName,
+  reduceBuyin,
 };
