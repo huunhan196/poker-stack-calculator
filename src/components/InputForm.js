@@ -39,7 +39,6 @@ function InputForm({ isOpen, onClose }) {
           <label className="mb-2 font-medium">Number of players:</label>
           <input
             type="number"
-            placeholder="No. of players"
             className="px-2 rounded-lg w-1/4 border bg-slate-100 py-2 text-gray-700 focus:outline-none"
             min={2}
             max={10}
@@ -55,7 +54,6 @@ function InputForm({ isOpen, onClose }) {
             <p>1 White =</p>
             <input
               type="number"
-              placeholder="Amt."
               className="px-2 w-1/3 mr-2 bg-slate-100 border rounded-lg py-2 text-gray-700 focus:outline-none"
               min={25}
               step={25}
