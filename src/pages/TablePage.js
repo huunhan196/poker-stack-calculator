@@ -99,10 +99,17 @@ function TablePage() {
           <button
             onClick={(e) => {
               e.preventDefault();
-              if (player.buyin > 0) {
+              if (player.buyin > 0 && player.buyin - buyInUI[player.id] >= 0) {
                 dispatch(
                   reduceBuyin({
                     amount: buyInUI[player.id],
+                    id: player.id,
+                  })
+                );
+              } else if (player.buyin - buyInUI[player.id] < 0) {
+                dispatch(
+                  reduceBuyin({
+                    amount: player.buyin,
                     id: player.id,
                   })
                 );
