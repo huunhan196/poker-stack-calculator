@@ -52,7 +52,7 @@ function Table({ data, config, keyFn }) {
     return (
       <tr
         key={keyFn(player)}
-        className="bg-white border-b dark:bg-gray-800 dark:border-gray-700 hover:brightness-125 transition ease-in-out"
+        className="border-b bg-gray-800 border-gray-700 hover:brightness-125 transition ease-in-out"
       >
         {renderedCells}
       </tr>
@@ -61,8 +61,8 @@ function Table({ data, config, keyFn }) {
 
   return (
     <div className="m-5 sm:m-8 relative overflow-x-auto shadow-md sm:rounded-lg">
-      <table className="w-full text-sm text-center text-gray-500 dark:text-gray-400">
-        <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-300">
+      <table className="w-full text-sm text-center text-gray-400">
+        <thead className="text-xs uppercase bg-gray-700 text-gray-300">
           <tr>{renderedHeader}</tr>
         </thead>
         <tbody>{renderedRow}</tbody>
