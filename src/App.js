@@ -5,6 +5,28 @@ import { useDispatch } from "react-redux";
 import { reset, resetStats, addPlayer } from "./store";
 
 function App() {
+  const handleMouseOver = (e) => {
+    const letters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    let iterations = 0;
+    const interval = setInterval(() => {
+      e.target.innerText = e.target.innerText
+        .split("")
+        .map((letter, index) => {
+          if (index < iterations) {
+            return e.target.dataset.value[index];
+          }
+
+          if (letter === " ") return " ";
+
+          return letters[Math.floor(Math.random() * 26)];
+        })
+        .join("");
+      if (iterations >= e.target.dataset.value.length) clearInterval(interval);
+
+      iterations += 1;
+    }, 40);
+  };
+
   const localKey = [
     "numOfPlayers",
     "player",
@@ -49,7 +71,11 @@ function App() {
   return (
     <div className="min-h-screen">
       <div className="flex flex-col items-center justify-center">
-        <h1 className="text-center text-gray-300 tracking-widest font-bold uppercase text-2xl mb-6 mt-6">
+        <h1
+          onMouseOver={handleMouseOver}
+          data-value="POKER STACK CALCULATOR"
+          className="font-mono text-center text-gray-300 tracking-widest font-bold uppercase text-2xl sm:text-3xl mb-4 mt-6"
+        >
           Poker Stack Calculator
         </h1>
         <div className="flex gap-2">
